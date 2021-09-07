@@ -1,0 +1,4 @@
+<svg height="300" width="300">
+    <path d="M150,10 l60,60 h-40 v60 h60 v-40 l60,60 l-60,60 v-40 h-60 v60 h40 l-60,60 l-60,-60 h40 v-60 h-60 v40 l-60,-60 l60,-60 v40 h60 v-60 h-40 l60,-60" transform="rotate(45, 150, 150)" />
+    <path d="M10,20 h75 m130,0 h75 m-10,-10 v75 m0,130 v75 m10,-10 h-75 m-130,0 h-75 m10,10 v-75 m0,-130 v-75" stroke="black" stroke-width="20" fill="none" />
+</svg>

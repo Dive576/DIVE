@@ -1,0 +1,8 @@
+<svg height="300" width="300">
+    <path d="M20,10 v280 h270" stroke="black" stroke-width="20" fill="none" />
+    <path d="M70,240 L130 60 L190 240 L250 60" stroke="black" stroke-width="10" fill="none" />
+    <circle cx="70" cy="240" r="15" />
+    <circle cx="130" cy="60" r="15" />
+    <circle cx="190" cy="240" r="15" />
+    <circle cx="250" cy="60" r="15" />
+</svg>

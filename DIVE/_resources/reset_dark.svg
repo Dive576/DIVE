@@ -1,0 +1,5 @@
+<svg height="300" width="300">
+    <polygon points="150,10 290,150 10,150" fill="white" />
+    <rect x="192.5" y="25" width="40" height="70" fill="white" />
+    <path d="M50,150 v140 h75 v-105 h50 v105 h75 v-140" fill="white" />
+</svg>

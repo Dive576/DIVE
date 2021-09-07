@@ -1,0 +1,11 @@
+<svg height="300" width="300">
+    <path d="M10,35 h280" stroke="black" stroke-width="50" />
+    <path d="M10,280 h280" stroke="black" stroke-width="20" />
+    <path d="M20,10 v280" stroke="black" stroke-width="20" />
+    <path d="M280,10 v280" stroke="black" stroke-width="20" />
+    <path d="M10,110 h280" stroke="black" stroke-width="10" />
+    <path d="M10,165 h280" stroke="black" stroke-width="10" />
+    <path d="M10,220 h280" stroke="black" stroke-width="10" />
+    <path d="M105,10 v280" stroke="black" stroke-width="10" />
+    <path d="M195,10 v280" stroke="black" stroke-width="10" />
+</svg>

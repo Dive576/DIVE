@@ -1,0 +1,5 @@
+<svg height="300" width="300">
+    <ellipse cx="150" cy="100" rx="130" ry="80" stroke="white" stroke-width="20" fill="none" />
+    <circle cx="110" cy="175" r="30" fill="white" />
+    <path d="M110,175 q60,90,-60,105" stroke="white" stroke-width="20" fill="none" />
+</svg>

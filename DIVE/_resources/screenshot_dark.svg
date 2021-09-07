@@ -1,0 +1,5 @@
+<svg height="300" width="300">
+    <rect x="80" y="30" width="140" height="30" fill="white" />
+    <path d="M10,60 h280 v210 h-280 z M230,165 a80,80,0,1,0,-160,0 a80,80,0,1,0,160,0" fill="white" />
+    <circle cx="150" cy="165" r="55" fill="white" />
+</svg>
