@@ -621,7 +621,7 @@ class EllipseArtist(Artist):
         visual_input['radius'] = [x_radius, y_radius]
         to_shape = (1,)
         visual_input['color'] = self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.color, self.color_field, self.colormap, self.color_label, self.color_unit, is_1d=True, get_last=True, to_shape=to_shape)
-        visual_input['border_color'] = self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.edge_color, self.edge_color_field, self.edge_color_map, self.edge_color_label, self.edge_color_unit, is_1d=True, get_last=True, to_shape=to_shape) if visual_input['border_width'] > 0 else self.edge_color
+        visual_input['border_color'] = self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.edge_color, self.edge_color_field, self.edge_colormap, self.edge_color_label, self.edge_color_unit, is_1d=True, get_last=True, to_shape=to_shape) if visual_input['border_width'] > 0 else self.edge_color
         return visual_input
 
     def get_legend_info(self, str_map, limits_source):
@@ -1011,7 +1011,7 @@ class PolygonArtist(Artist):
             visual_input['border_width'] = self.field_to_numeric(data_obj, valid_idx, None, self.edge_width_field, is_1d=True, get_last=True)
         to_shape = (1,)
         visual_input['color'] = self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.color, self.color_field, self.colormap, self.color_label, self.color_unit, is_1d=True, get_last=True, to_shape=to_shape)
-        visual_input['border_color'] = self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.edge_color, self.edge_color_field, self.edge_color_map, self.edge_color_label, self.edge_color_unit, is_1d=True, get_last=True, to_shape=to_shape) if visual_input['border_width'] > 0 else self.edge_color
+        visual_input['border_color'] = self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.edge_color, self.edge_color_field, self.edge_colormap, self.edge_color_label, self.edge_color_unit, is_1d=True, get_last=True, to_shape=to_shape) if visual_input['border_width'] > 0 else self.edge_color
         return visual_input
 
     def get_legend_info(self, str_map, limits_source):
@@ -1150,7 +1150,7 @@ class RectangleArtist(Artist):
             visual_input['height'] = self.field_to_numeric(data_obj, valid_idx, None, self.height_field, is_1d=True, get_last=True, norm_limits=norm_limits['y'], is_size=True)
         to_shape = (1,)
         visual_input['color'] = self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.color, self.color_field, self.colormap, self.color_label, self.color_unit, is_1d=True, get_last=True, to_shape=to_shape)
-        visual_input['border_color'] = self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.edge_color, self.edge_color_field, self.edge_color_map, self.edge_color_label, self.edge_color_unit, is_1d=True, get_last=True, to_shape=to_shape) if visual_input['border_width'] > 0 else self.edge_color
+        visual_input['border_color'] = self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.edge_color, self.edge_color_field, self.edge_colormap, self.edge_color_label, self.edge_color_unit, is_1d=True, get_last=True, to_shape=to_shape) if visual_input['border_width'] > 0 else self.edge_color
         transform = vpvisuals.transforms.STTransform()
         transform.translate = (x, y, 0)
         return visual_input, transform
