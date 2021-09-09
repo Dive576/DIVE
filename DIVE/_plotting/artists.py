@@ -1492,8 +1492,8 @@ class SurfaceArtist(Artist):
 
     def get_current_data(self, data_obj, valid_idx, norm_limits, str_maps, color_limits):
         visual_input = {}
-        visual_input['y'] = self.field_to_numeric(data_obj, valid_idx, str_maps['x'], self.x_field, is_1d=False, get_last=True, norm_limits=norm_limits['x'])
-        visual_input['x'] = self.field_to_numeric(data_obj, valid_idx, str_maps['y'], self.y_field, is_1d=False, get_last=True, norm_limits=norm_limits['y'])
+        visual_input['x'] = self.field_to_numeric(data_obj, valid_idx, str_maps['x'], self.x_field, is_1d=False, get_last=True, norm_limits=norm_limits['x'])
+        visual_input['y'] = self.field_to_numeric(data_obj, valid_idx, str_maps['y'], self.y_field, is_1d=False, get_last=True, norm_limits=norm_limits['y'])
         visual_input['z'] = np.rot90(self.field_to_numeric(data_obj, valid_idx, str_maps['z'], self.z_field, is_1d=False, get_last=True, norm_limits=norm_limits['z']), 3)
         to_shape = visual_input['z'].shape
         visual_input['colors'] = np.rot90(self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.color, self.color_field, self.colormap, self.color_label, self.color_unit, is_1d=False, get_last=True, to_shape=to_shape), 3).reshape(to_shape[0] * to_shape[1], 4)
@@ -1599,9 +1599,9 @@ class SurfaceArtist(Artist):
             color_shape = None if attrs['color_field'] is None else data.loc[:, attrs['color_field']].map(np.shape)
             if color_shape is not None and (z_shape != color_shape).any():
                 return 'Every array in color_field must have the same shape as its corresponding array in z_field.'
-            elif (x_len != z_shape.map(lambda s: s[0])).any():
+            elif (x_len != z_shape.map(lambda s: s[1])).any():
                 return 'Every array in x_field must have the same number of values as there are columns in z_field.'
-            elif (y_len != z_shape.map(lambda s: s[1])).any():
+            elif (y_len != z_shape.map(lambda s: s[0])).any():
                 return 'Every array in y_field must have the same number of values as there are rows in z_field.'
 
         for attr in attrs:
