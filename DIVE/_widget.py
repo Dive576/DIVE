@@ -1235,8 +1235,9 @@ class DIVEWidget(_qtwidgets.QWidget):
 
         Returns
         -------
-        dict, list
+        None, dict, list
             The parameters of the specified artist(s).
+            Will be None if "axis_name" or "name" is invalid.
         """
         return self._dive_manager.get_artist(axis_name, name)
 
@@ -1253,8 +1254,9 @@ class DIVEWidget(_qtwidgets.QWidget):
 
         Returns
         -------
-        dict, list
+        None, dict, list
             The parameters of the specified axis/axes.
+            Will be None if "name" is invalid.
         """
         return self._dive_manager.get_axis(name)
 
@@ -1271,8 +1273,9 @@ class DIVEWidget(_qtwidgets.QWidget):
 
         Returns
         -------
-        dict, list
+        None, dict, list
             The parameters of the specified axis group(s).
+            Will be None if "name" is invalid.
         """
         return self._dive_manager.get_axis_group(name)
 
@@ -1300,8 +1303,9 @@ class DIVEWidget(_qtwidgets.QWidget):
 
         Returns
         -------
-        dict, list
+        None, dict, list
             The parameters of the specified data object(s).
+            Will be None if "name" is invalid.
         """
         return self._dive_manager.get_data(name)
 
@@ -1318,8 +1322,9 @@ class DIVEWidget(_qtwidgets.QWidget):
 
         Returns
         -------
-        dict, list
+        None, dict, list
             The parameters of the specified custom filter group(s).
+            Will be None if "name" is invalid.
         """
         return self._dive_manager.get_filter('custom', name)
 
@@ -1336,8 +1341,9 @@ class DIVEWidget(_qtwidgets.QWidget):
 
         Returns
         -------
-        dict, list
+        None, dict, list
             The parameters of the specified ID filter group(s).
+            Will be None if "name" is invalid.
         """
         return self._dive_manager.get_filter('ID', name)
 
@@ -1354,8 +1360,9 @@ class DIVEWidget(_qtwidgets.QWidget):
 
         Returns
         -------
-        dict, list
+        None, dict, list
             The parameters of the specified value filter group(s).
+            Will be None if "name" is invalid.
         """
         return self._dive_manager.get_filter('value', name)
 
@@ -1372,8 +1379,9 @@ class DIVEWidget(_qtwidgets.QWidget):
 
         Returns
         -------
-        dict, list
+        None, dict, list
             The indices of the specified custom filter group(s).
+            Will be None if "name" is invalid.
         """
         return self._dive_manager.get_filter_indices('custom', name)
 
@@ -1390,8 +1398,9 @@ class DIVEWidget(_qtwidgets.QWidget):
 
         Returns
         -------
-        dict, list
+        None, dict, list
             The indices of the specified ID filter group(s).
+            Will be None if "name" is invalid.
         """
         return self._dive_manager.get_filter_indices('ID', name)
 
@@ -1419,8 +1428,9 @@ class DIVEWidget(_qtwidgets.QWidget):
 
         Returns
         -------
-        dict, list
+        None, dict, list
             The indices of the specified value filter group(s).
+            Will be None if "name" is invalid.
         """
         return self._dive_manager.get_filter_indices('value', name)
 
@@ -1470,8 +1480,9 @@ class DIVEWidget(_qtwidgets.QWidget):
 
         Returns
         -------
-        dict, list
+        None, dict, list
             The parameters of the specified table row(s).
+            Will be None if "index" is invalid.
         """
         return self._dive_manager.get_table_row(index)
 
