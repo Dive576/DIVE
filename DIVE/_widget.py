@@ -37,7 +37,7 @@ class DIVEWidget(_qtwidgets.QWidget):
         self.setWindowTitle('Data Interface for Visual Exploration')
         self._dive_manager = _DIVEManager(self, unit_reg)
 
-    def add_arrow_artist(self, axis_name, name, data_name, x_field, y_field, z_field=None, label_field=None, label_size=10, visible=True, draw_order=0, legend_text=None, selectable=True,
+    def add_arrow_artist(self, axis_name, name, data_name, x_field, y_field, z_field=None, label_field=None, label_size=10, visible=True, draw_order=0, label_draw_order=0, legend_text=None, selectable=True,
                          line_width=1, line_color='r', line_color_field=None, line_colormap='viridis', line_color_label=None, line_color_unit=None,
                          arrow_shape='stealth', arrow_spacing=0, show_last_arrow=True, arrow_size=10,
                          arrow_color='g', arrow_color_field=None, arrow_colormap='viridis', arrow_color_label=None, arrow_color_unit=None):
@@ -69,6 +69,8 @@ class DIVEWidget(_qtwidgets.QWidget):
         draw_order : numeric (Default: 0)
             The number used to determine the draw order for this artist.
             Artists with small "draw_order" values are drawn before artists with large "draw_order" values.
+        label_draw_order : numeric (Default: 0)
+            The number used to determine the draw order for labels.
         legend_text : None, str (Default: None)
             The label to display in the legend for this artist.
             If None, this artist will not appear in the legend.
@@ -134,7 +136,7 @@ class DIVEWidget(_qtwidgets.QWidget):
 
         It is possible to cycle through the colorbars in an axis by clicking on the colorbar.
         """
-        self._dive_manager.add_artist(axis_name, 'arrow', dict(name=name, data_name=data_name, x_field=x_field, y_field=y_field, z_field=z_field, label_field=label_field, label_size=label_size, visible=visible, draw_order=draw_order, legend_text=legend_text, selectable=selectable,
+        self._dive_manager.add_artist(axis_name, 'arrow', dict(name=name, data_name=data_name, x_field=x_field, y_field=y_field, z_field=z_field, label_field=label_field, label_size=label_size, visible=visible, draw_order=draw_order, label_draw_order=label_draw_order, legend_text=legend_text, selectable=selectable,
                                                                line_width=line_width, line_color=line_color, line_color_field=line_color_field, line_colormap=line_colormap, line_color_label=line_color_label, line_color_unit=line_color_unit,
                                                                arrow_shape=arrow_shape, arrow_spacing=arrow_spacing, show_last_arrow=show_last_arrow, arrow_size=arrow_size,
                                                                arrow_color=arrow_color, arrow_color_field=arrow_color_field, arrow_colormap=arrow_colormap, arrow_color_label=arrow_color_label, arrow_color_unit=arrow_color_unit))
@@ -763,7 +765,7 @@ class DIVEWidget(_qtwidgets.QWidget):
         """
         self._dive_manager.add_artist(axis_name, 'rectangle', dict(name=name, data_name=data_name, visible=visible, draw_order=draw_order, legend_text=legend_text, x_pos=x_pos, x_pos_field=x_pos_field, y_pos=y_pos, y_pos_field=y_pos_field, edge_width=edge_width, edge_width_field=edge_width_field, width=width, width_field=width_field, height=height, height_field=height_field, color=color, color_field=color_field, colormap=colormap, color_label=color_label, color_unit=color_unit, edge_color=edge_color, edge_color_field=edge_color_field, edge_colormap=edge_colormap, edge_color_label=edge_color_label, edge_color_unit=edge_color_unit))
 
-    def add_scatter_artist(self, axis_name, name, data_name, x_field, y_field, z_field=None, label_field=None, label_size=10, visible=True, draw_order=0, legend_text=None, selectable=True,
+    def add_scatter_artist(self, axis_name, name, data_name, x_field, y_field, z_field=None, label_field=None, label_size=10, visible=True, draw_order=0, label_draw_order=0, legend_text=None, selectable=True,
                            line_width=1, line_color='r', line_color_field=None, line_colormap='viridis', line_color_label=None, line_color_unit=None,
                            marker='o', marker_size=10, marker_color='g', marker_color_field=None, marker_colormap='viridis', marker_color_label=None, marker_color_unit=None,
                            edge_width=0, edge_color='g', edge_color_field=None, edge_colormap='viridis', edge_color_label=None, edge_color_unit=None):
@@ -795,6 +797,8 @@ class DIVEWidget(_qtwidgets.QWidget):
         draw_order : numeric (Default: 0)
             The number used to determine the draw order for this artist.
             Artists with small "draw_order" values are drawn before artists with large "draw_order" values.
+        label_draw_order : numeric (Default: 0)
+            The number used to determine the draw order for labels.
         legend_text : None, str (Default: None)
             The label to display in the legend for this artist.
             If None, this artist will not appear in the legend.
@@ -875,7 +879,7 @@ class DIVEWidget(_qtwidgets.QWidget):
 
         It is possible to cycle through the colorbars in an axis by clicking on the colorbar.
         """
-        self._dive_manager.add_artist(axis_name, 'scatter', dict(name=name, data_name=data_name, x_field=x_field, y_field=y_field, z_field=z_field, label_field=label_field, label_size=label_size, visible=visible, draw_order=draw_order, legend_text=legend_text, selectable=selectable,
+        self._dive_manager.add_artist(axis_name, 'scatter', dict(name=name, data_name=data_name, x_field=x_field, y_field=y_field, z_field=z_field, label_field=label_field, label_size=label_size, visible=visible, draw_order=draw_order, label_draw_order=label_draw_order, legend_text=legend_text, selectable=selectable,
                                                                  line_width=line_width, line_color=line_color, line_color_field=line_color_field, line_colormap=line_colormap, line_color_label=line_color_label, line_color_unit=line_color_unit,
                                                                  marker=marker, marker_size=marker_size, marker_color=marker_color, marker_color_field=marker_color_field, marker_colormap=marker_colormap, marker_color_label=marker_color_label, marker_color_unit=marker_color_unit,
                                                                  edge_width=edge_width, edge_color=edge_color, edge_color_field=edge_color_field, edge_colormap=edge_colormap, edge_color_label=edge_color_label, edge_color_unit=edge_color_unit))
