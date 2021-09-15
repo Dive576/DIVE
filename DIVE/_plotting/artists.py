@@ -312,7 +312,7 @@ class ArrowArtist(Artist):
             return self.calc_limits(data_obj, valid_idx, color_fields, is_1d=True, color_keys=color_keys)
 
     def get_state(self, as_copy=True):
-        state = {attr: getattr(self, attr, None) for attr in ['artist_type', 'name', 'data_name', 'x_field', 'y_field', 'z_field', 'label_field', 'label_size', 'visible', 'draw_order', 'legend_text', 'selectable',
+        state = {attr: getattr(self, attr, None) for attr in ['artist_type', 'name', 'data_name', 'x_field', 'y_field', 'z_field', 'label_field', 'label_size', 'visible', 'draw_order', 'label_draw_order', 'legend_text', 'selectable',
                                                               'line_width', 'line_color', 'line_color_field', 'line_colormap', 'line_color_label', 'line_color_unit',
                                                               'arrow_shape', 'arrow_spacing', 'show_last_arrow', 'arrow_size',
                                                               'arrow_color', 'arrow_color_field', 'arrow_colormap', 'arrow_color_label', 'arrow_color_unit']}
@@ -371,7 +371,7 @@ class ArrowArtist(Artist):
             attrs['show_last_arrow'] = state['show_last_arrow']
             if not isinstance(attrs['show_last_arrow'], (bool, np.bool_)):
                 return 'show_last_arrow must be of type: bool'
-        for attr in ['label_size', 'draw_order', 'line_width', 'arrow_size']:
+        for attr in ['label_size', 'draw_order', 'label_draw_order', 'line_width', 'arrow_size']:
             if attr in state:
                 attrs[attr] = state[attr]
                 if not pd.api.types.is_numeric_dtype(type(attrs[attr])):
@@ -417,7 +417,7 @@ class ArrowArtist(Artist):
             visuals[0].arrow_size = visual_input.pop('arrow_size')
             visuals[0].arrow_type = visual_input.pop('arrow_type')
             visuals[0].set_data(**visual_input)
-            visuals[0].order = visuals[1].order = self.draw_order
+            visuals[0].order, visuals[1].order = self.draw_order, self.label_draw_order
             show_labels = len(text_input) > 0
             if not visuals[0].visible:
                 visuals[0].visible = True
@@ -1375,7 +1375,7 @@ class ScatterArtist(Artist):
             return self.calc_limits(data_obj, valid_idx, color_fields, is_1d=True, color_keys=color_keys)
 
     def get_state(self, as_copy=True):
-        state = {attr: getattr(self, attr, None) for attr in ['artist_type', 'name', 'data_name', 'x_field', 'y_field', 'z_field', 'label_field', 'label_size', 'visible', 'draw_order', 'legend_text', 'selectable',
+        state = {attr: getattr(self, attr, None) for attr in ['artist_type', 'name', 'data_name', 'x_field', 'y_field', 'z_field', 'label_field', 'label_size', 'visible', 'draw_order', 'label_draw_order', 'legend_text', 'selectable',
                                                               'line_width', 'line_color', 'line_color_field', 'line_colormap', 'line_color_label', 'line_color_unit',
                                                               'marker', 'marker_size', 'marker_color', 'marker_color_field', 'marker_colormap', 'marker_color_label', 'marker_color_unit',
                                                               'edge_width', 'edge_color', 'edge_color_field', 'edge_colormap', 'edge_color_label', 'edge_color_unit']}
@@ -1427,7 +1427,7 @@ class ScatterArtist(Artist):
                 return 'marker must be of type: str'
             elif attrs['marker'] not in vpvisuals.marker_types:
                 return 'marker must be one of the following: {}'.format(str(vpvisuals.marker_types)[1:-1])
-        for attr in ['label_size', 'draw_order', 'line_width', 'marker_size', 'edge_width']:
+        for attr in ['label_size', 'draw_order', 'label_draw_order', 'line_width', 'marker_size', 'edge_width']:
             if attr in state:
                 attrs[attr] = state[attr]
                 if not pd.api.types.is_numeric_dtype(type(attrs[attr])):
@@ -1470,7 +1470,7 @@ class ScatterArtist(Artist):
         if self.visible and valid_idx.any():
             visual_input, text_input = self.get_current_data(data_obj, valid_idx, norm_limits, str_maps, color_limits)
             visuals[0].set_data(**visual_input)
-            visuals[0].order = visuals[1].order = self.draw_order
+            visuals[0].order, visuals[1].order = self.draw_order, self.label_draw_order
             show_labels = len(text_input) > 0
             if not visuals[0].visible:
                 visuals[0].visible = True
