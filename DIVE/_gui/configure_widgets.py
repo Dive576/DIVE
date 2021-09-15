@@ -36,8 +36,7 @@ class ArrowWidget(qtwidgets.QWidget):
         self.y_field = qtwidgets.QComboBox()
         pos_group.layout().addRow('Y Field:', self.y_field)
         if axis_type == '3d':
-            self.z_field = qtwidgets.QComboBox()
-            pos_group.layout().addRow('Z Field:', self.z_field)
+            self.z_field = add_optional_combobox(pos_group.layout(), 'Z Field:', artist['z_field'] is not None)
         else:
             self.z_field = None
 
@@ -87,7 +86,7 @@ class ArrowWidget(qtwidgets.QWidget):
                 'label_size': self.label_size.value(),
                 'x_field': self.x_field.currentText(),
                 'y_field': self.y_field.currentText(),
-                'z_field': None if self.z_field is None else self.z_field.currentText(),
+                'z_field': self.z_field.currentText() if self.z_field is not None and self.z_field.isEnabled() else None,
                 'line_width': self.line_width.value(),
                 'line_color': self.line_color.get_color(),
                 'line_color_field': self.line_color_field.currentText() if self.line_color_field.isEnabled() else None,
@@ -661,8 +660,7 @@ class ScatterWidget(qtwidgets.QWidget):
         self.y_field = qtwidgets.QComboBox()
         pos_group.layout().addRow('Y Field:', self.y_field)
         if axis_type == '3d':
-            self.z_field = qtwidgets.QComboBox()
-            pos_group.layout().addRow('Z Field:', self.z_field)
+            self.z_field = add_optional_combobox(pos_group.layout(), 'Z Field:', artist['z_field'] is not None)
         else:
             self.z_field = None
 
@@ -711,7 +709,7 @@ class ScatterWidget(qtwidgets.QWidget):
                 'label_size': self.label_size.value(),
                 'x_field': self.x_field.currentText(),
                 'y_field': self.y_field.currentText(),
-                'z_field': None if self.z_field is None else self.z_field.currentText(),
+                'z_field': self.z_field.currentText() if self.z_field is not None and self.z_field.isEnabled() else None,
                 'line_width': self.line_width.value(),
                 'line_color': self.line_color.get_color(),
                 'line_color_field': self.line_color_field.currentText() if self.line_color_field.isEnabled() else None,
@@ -827,8 +825,7 @@ class TextWidget(qtwidgets.QWidget):
         self.y_field = qtwidgets.QComboBox()
         pos_group.layout().addRow('Y Field:', self.y_field)
         if axis_type == '3d':
-            self.z_field = qtwidgets.QComboBox()
-            pos_group.layout().addRow('Z Field:', self.z_field)
+            self.z_field = add_optional_combobox(pos_group.layout(), 'Z Field:', artist['z_field'] is not None)
         else:
             self.z_field = None
 
@@ -875,7 +872,7 @@ class TextWidget(qtwidgets.QWidget):
                 'text_field': self.text_field.currentText(),
                 'x_field': self.x_field.currentText(),
                 'y_field': self.y_field.currentText(),
-                'z_field': None if self.z_field is None else self.z_field.currentText(),
+                'z_field': self.z_field.currentText() if self.z_field is not None and self.z_field.isEnabled() else None,
                 'x_anchor': self.x_anchor.currentText(),
                 'y_anchor': self.y_anchor.currentText(),
                 'font_size': self.font_size.value(),
