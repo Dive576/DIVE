@@ -18,6 +18,11 @@ class ArrowWidget(qtwidgets.QWidget):
         self.data_objs = data_objs
 
         self.visible_val, self.draw_order, self.legend_text = add_common_widgets(self.layout(), artist['visible'], artist['draw_order'], artist['legend_text'])
+        self.label_draw_order = qtwidgets.QDoubleSpinBox()
+        self.label_draw_order.setDecimals(6)
+        self.label_draw_order.setRange(float('-inf'), float('inf'))
+        self.label_draw_order.setValue(artist['label_draw_order'])
+        self.layout().insertRow(2, 'Label Draw Order:', self.label_draw_order)
 
         self.selectable = qtwidgets.QCheckBox()
         self.selectable.setChecked(artist['selectable'])
@@ -79,6 +84,7 @@ class ArrowWidget(qtwidgets.QWidget):
         return {'artist_type': 'arrow',
                 'visible': self.visible_val.isChecked(),
                 'draw_order': self.draw_order.value(),
+                'label_draw_order': self.label_draw_order.value(),
                 'legend_text': self.legend_text.text() if self.legend_text.isEnabled() else None,
                 'selectable': self.selectable.isChecked(),
                 'data_name': self.data_name.currentText(),
@@ -115,7 +121,7 @@ class ArrowWidget(qtwidgets.QWidget):
 
     @staticmethod
     def get_default_values():
-        return dict(visible=True, draw_order=0, legend_text=None, selectable=True, data_name=None, label_field=None, label_size=10, x_field=None, y_field=None, z_field=None, line_width=1, line_color='r', line_color_field=None, line_colormap='viridis', line_color_label=None, line_color_unit=None, arrow_shape='stealth', arrow_spacing=0, show_last_arrow=True, arrow_size=10, arrow_color='g', arrow_color_field=None, arrow_colormap='viridis', arrow_color_label=None, arrow_color_unit=None)
+        return dict(visible=True, draw_order=0, label_draw_order=0, legend_text=None, selectable=True, data_name=None, label_field=None, label_size=10, x_field=None, y_field=None, z_field=None, line_width=1, line_color='r', line_color_field=None, line_colormap='viridis', line_color_label=None, line_color_unit=None, arrow_shape='stealth', arrow_spacing=0, show_last_arrow=True, arrow_size=10, arrow_color='g', arrow_color_field=None, arrow_colormap='viridis', arrow_color_label=None, arrow_color_unit=None)
 
 class AxisWidget(qtwidgets.QWidget):
     def __init__(self, axis):
@@ -643,6 +649,11 @@ class ScatterWidget(qtwidgets.QWidget):
         self.data_objs = data_objs
 
         self.visible_val, self.draw_order, self.legend_text = add_common_widgets(self.layout(), artist['visible'], artist['draw_order'], artist['legend_text'])
+        self.label_draw_order = qtwidgets.QDoubleSpinBox()
+        self.label_draw_order.setDecimals(6)
+        self.label_draw_order.setRange(float('-inf'), float('inf'))
+        self.label_draw_order.setValue(artist['label_draw_order'])
+        self.layout().insertRow(2, 'Label Draw Order:', self.label_draw_order)
         self.selectable = qtwidgets.QCheckBox()
         self.selectable.setChecked(artist['selectable'])
         self.layout().addRow('Selectable:', self.selectable)
@@ -702,6 +713,7 @@ class ScatterWidget(qtwidgets.QWidget):
         return {'artist_type': 'scatter',
                 'visible': self.visible_val.isChecked(),
                 'draw_order': self.draw_order.value(),
+                'label_draw_order': self.label_draw_order.value(),
                 'legend_text': self.legend_text.text() if self.legend_text.isEnabled() else None,
                 'selectable': self.selectable.isChecked(),
                 'data_name': self.data_name.currentText(),
@@ -742,7 +754,7 @@ class ScatterWidget(qtwidgets.QWidget):
 
     @staticmethod
     def get_default_values():
-        return dict(visible=True, draw_order=0, legend_text=None, selectable=True, data_name=None, label_field=None, label_size=10, x_field=None, y_field=None, z_field=None, line_width=1, line_color='r', line_color_field=None, line_colormap='viridis', line_color_label=None, line_color_unit=None, marker='o', marker_size=10, marker_color='g', marker_color_field=None, marker_colormap='viridis', marker_color_label=None, marker_color_unit=None, edge_width=0, edge_color='g', edge_color_field=None, edge_colormap='viridis', edge_color_label=None, edge_color_unit=None)
+        return dict(visible=True, draw_order=0, label_draw_order=0, legend_text=None, selectable=True, data_name=None, label_field=None, label_size=10, x_field=None, y_field=None, z_field=None, line_width=1, line_color='r', line_color_field=None, line_colormap='viridis', line_color_label=None, line_color_unit=None, marker='o', marker_size=10, marker_color='g', marker_color_field=None, marker_colormap='viridis', marker_color_label=None, marker_color_unit=None, edge_width=0, edge_color='g', edge_color_field=None, edge_colormap='viridis', edge_color_label=None, edge_color_unit=None)
 
 class SurfaceWidget(qtwidgets.QWidget):
     def __init__(self, data_objs, axis_type, artist):
