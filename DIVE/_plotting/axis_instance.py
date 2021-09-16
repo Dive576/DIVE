@@ -79,10 +79,10 @@ class AxisInstance:
         if self.current_color_key is None:
             self.cycle_color_key()
 
-    def get_artist_legend(self, data_objs, axis_obj):
+    def get_artist_legend(self, data_objs, axis_obj, apply_limits_filter):
         entries = []
         for artist in axis_obj.artists.values():
-            if artist.visible and artist.legend_text is not None and (artist.data_name is None or data_objs[artist.data_name].filtered_idx.any()):
+            if (artist.visible or not apply_limits_filter) and artist.legend_text is not None and (artist.data_name is None or data_objs[artist.data_name].filtered_idx.any()):
                 artist_icon, artist_subentries = artist.get_legend_info(self.str_maps['color'], self.limits_source['color'])
                 entries.append((artist.legend_text, artist_icon, artist_subentries))
         return entries
@@ -95,6 +95,8 @@ class AxisInstance:
 
         # Get limits for each artist
         for artist_obj in axis_obj.artists.values():
+            if scope in ['filter', 'time'] and not artist_obj.visible:
+                continue
             data_obj = data_objs.get(artist_obj.data_name, None)
             is_time = False
             if scope == 'filter':
@@ -164,7 +166,7 @@ class AxisInstance:
         output, valid_idx = {}, {}
         norm_limits = self.limits_all if isinstance(self.view.camera, custom_vispy.Camera_2D) else self.limits
         for artist_obj in axis_obj.artists.values():
-            if artist_obj.data_name is not None and artist_obj.selectable:
+            if artist_obj.data_name is not None and artist_obj.visible and artist_obj.selectable:
                 if artist_obj.data_name not in valid_idx:
                     valid_idx[artist_obj.data_name] = data_objs[artist_obj.data_name].get_valid_idx(current_time, hold_time)
                 artist_coords = artist_obj.get_coordinates(data_objs[artist_obj.data_name], valid_idx[artist_obj.data_name], norm_limits, self.str_maps)
