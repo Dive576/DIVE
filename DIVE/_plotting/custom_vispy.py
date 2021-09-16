@@ -246,10 +246,10 @@ class Canvas(vpscene.SceneCanvas):
             return True
         return False
 
-    def get_legend(self, data_objs, axis_objs):
+    def get_legend(self, data_objs, axis_objs, apply_limits_filter):
         entries, merged_entries = [], {}
         for axis in self.axes:
-            entries += axis.get_artist_legend(data_objs, axis_objs[axis.state['name']])
+            entries += axis.get_artist_legend(data_objs, axis_objs[axis.state['name']], apply_limits_filter)
         for label, icon, subentries in entries:
             merged_entries[(label, icon)] = merged_entries.get((label, icon), []) + subentries
         legend = [(key[0], key[1], sorted(set(merged_entries[key]), key=lambda s: helper_functions.natural_order(s[0]))) for key in merged_entries]
