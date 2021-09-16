@@ -371,7 +371,7 @@ class DIVEManager:
 
     def update_legend(self):
         self.legend.clear()
-        entries = self.canvas.get_legend(self.data, self.axes)
+        entries = self.canvas.get_legend(self.data, self.axes, self.settings['apply_limits_filter'])
         for entry in entries:
             item = custom_qt.CompactTreeWidgetItem(parent=self.legend, text=entry[0])
             item.setIcon(0, qtgui.QIcon(qtgui.QPixmap.fromImage(qtgui.QImage.fromData(entry[1].encode()))))
