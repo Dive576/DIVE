@@ -250,9 +250,9 @@ class DIVEValueFilter:
         if is_top and self.id_filter is not None:
             for data_name in valid_idx:
                 id_vals = data_objs[data_name].data.loc[:, data_objs[data_name].id_field]
-                group = pd.Series(valid_idx[data_name]).groupby(id_vals)
-                group = group.any() if self.id_filter in ['any match', 'any mismatch'] else group.all()
-                valid_ids = group.index[group] if self.id_filter in ['any_match', 'all match'] else group.index[~group]
+                group = pd.Series(valid_idx[data_name]).groupby(id_vals.values, sort=False)
+                group = group.any() if self.id_filter in ['any match', 'all mismatch'] else group.all()
+                valid_ids = group.index[group] if self.id_filter in ['any match', 'all match'] else group.index[~group]
                 valid_idx[data_name] = id_vals.isin(valid_ids).to_numpy()
 
         return valid_idx
