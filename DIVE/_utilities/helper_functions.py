@@ -65,8 +65,7 @@ def print_error(err_msg):
     err_msg : str
         The error message to print.
     """
-    traceback.print_stack(limit=-1)
-    print(err_msg)
+    print('Traceback (most recent call last):\n{}{}\n'.format(''.join(traceback.format_stack()[:-2]), err_msg))
 
 def safe_time_math(time, amount, add=True):
     """
