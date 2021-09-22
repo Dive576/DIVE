@@ -39,7 +39,7 @@ widget.show()
 app.exec()
 ```
 
-You can also look at `dive_example.py` to see a basic example of how to use DIVE. The full list of functions and inputs supported by DIVE can be found in `DIVE/_widgets.py`.
+You can also look at `dive_example.py` to see a basic example of how to use DIVE. The full list of functions and inputs supported by DIVE can be found in `DIVE/_widget.py`.
 
 ## Example
 
