@@ -15,6 +15,7 @@ class DIVEAxis:
         err_msg = artist_obj.set_state(data_objs, self.axis_type, list(self.artists), unit_reg, state)
         if err_msg is None:
             self.artists[artist_obj.name] = artist_obj
+            self.artists = dict(sorted(self.artists.items(), key=lambda item: helper_functions.natural_order(item[0])))
         return err_msg
 
     def edit_artist(self, data_objs, name, unit_reg, state):
@@ -32,8 +33,7 @@ class DIVEAxis:
         if not isinstance(name, (type(None), str)):
             err_msg = 'name must one of the following types: None, str'
         elif name is None:
-            artist_names = sorted(list(self.artists), key=helper_functions.natural_order)
-            artist = [self.artists[artist_name].get_state() for artist_name in artist_names]
+            artist = [artist_obj.get_state() for artist_obj in self.artists.values()]
         elif name in self.artists:
             artist = self.artists[name].get_state()
         else:
