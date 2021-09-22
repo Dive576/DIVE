@@ -195,11 +195,8 @@ class ArrowArtist(Artist):
         visual_input, text_input = {}, {}
         visual_input['pos'] = self.get_coordinates(data_obj, valid_idx, norm_limits, str_maps)
         to_shape = (visual_input['pos'].shape[0],)
-        visual_input['width'] = self.line_width
         visual_input['arrow_color'] = self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.arrow_color, self.arrow_color_field, self.arrow_colormap, self.arrow_color_label, self.arrow_color_unit, is_1d=True, get_last=False, to_shape=to_shape)
-        visual_input['color'] = self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.line_color, self.line_color_field, self.line_colormap, self.line_color_label, self.line_color_unit, is_1d=True, get_last=False, to_shape=to_shape) if visual_input['width'] > 0 else self.line_color
-        visual_input['arrow_type'] = self.arrow_shape
-        visual_input['arrow_size'] = self.arrow_size
+        visual_input['color'] = self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.line_color, self.line_color_field, self.line_colormap, self.line_color_label, self.line_color_unit, is_1d=True, get_last=False, to_shape=to_shape) if self.line_width > 0 else self.line_color
         if data_obj.id_field is not None:
             id_vals = data_obj.data.loc[valid_idx, data_obj.id_field]
             id_vals.reset_index(drop=True, inplace=True)
@@ -258,7 +255,6 @@ class ArrowArtist(Artist):
                 last_idx = [-1]
             text_input['pos'] = visual_input['pos'][last_idx]
             text_input['text'] = ('  ' + data_obj.data.loc[valid_idx, self.label_field].iloc[last_idx].astype(str)).to_numpy()
-            text_input['font_size'] = self.label_size
         return visual_input, text_input
 
     def get_legend_info(self, str_map, limits_source):
@@ -319,8 +315,10 @@ class ArrowArtist(Artist):
         return copy.deepcopy(state) if as_copy else state
 
     def initialize(self, view):
-        arrow = vpscene.Arrow(parent=view.scene)
-        text = vpscene.Text(anchor_x='left', parent=view.scene)
+        arrow = vpscene.Arrow(arrow_size=self.arrow_size, arrow_type=self.arrow_shape, width=self.line_width, parent=view.scene)
+        arrow.order = self.draw_order
+        text = vpscene.Text(anchor_x='left', font_size=self.label_size, parent=view.scene)
+        text.order = self.label_draw_order
         return [arrow, text]
 
     def set_state(self, data_objs, axis_type, artist_names, unit_reg, state):
@@ -414,10 +412,7 @@ class ArrowArtist(Artist):
         if self.visible and valid_idx.any():
             visual_input, text_input = self.get_current_data(data_obj, valid_idx, norm_limits, str_maps, color_limits)
             visuals[0].arrow_color = visual_input.pop('arrow_color')
-            visuals[0].arrow_size = visual_input.pop('arrow_size')
-            visuals[0].arrow_type = visual_input.pop('arrow_type')
             visuals[0].set_data(**visual_input)
-            visuals[0].order, visuals[1].order = self.draw_order, self.label_draw_order
             show_labels = len(text_input) > 0
             if not visuals[0].visible:
                 visuals[0].visible = True
@@ -493,6 +488,7 @@ class BoxArtist(Artist):
     def initialize(self, view):
         box = vpscene.Mesh(parent=view.scene)
         box.set_gl_state(polygon_offset_fill=True, polygon_offset=(1, 1), depth_test=True)
+        box.order = self.draw_order
         return [box]
 
     def set_state(self, data_objs, axis_type, artist_names, unit_reg, state):
@@ -576,7 +572,6 @@ class BoxArtist(Artist):
             vertices, faces, _ = vpgeometry.create_box(width=visual_input['width'], height=visual_input['height'], depth=visual_input['depth'], planes=visual_input['planes'])
             visuals[0].set_data(vertices=vertices['position'], faces=faces, color=visual_input['color'])
             visuals[0].transform = transform
-            visuals[0].order = self.draw_order
             if not visuals[0].visible:
                 visuals[0].visible = True
         elif visuals[0].visible:
@@ -646,7 +641,9 @@ class EllipseArtist(Artist):
         return copy.deepcopy(state) if as_copy else state
 
     def initialize(self, view):
-        return [vpscene.Ellipse(center=[0, 0], parent=view.scene)]
+        ellipse = vpscene.Ellipse(center=[0, 0], parent=view.scene)
+        ellipse.order = self.draw_order
+        return [ellipse]
 
     def set_state(self, data_objs, axis_type, artist_names, unit_reg, state):
         attrs = self.get_state(as_copy=False)
@@ -730,7 +727,6 @@ class EllipseArtist(Artist):
             visuals[0].border.set_data(width=visual_input.pop('border_width'))
             for attr in visual_input:
                 setattr(visuals[0], attr, visual_input[attr])
-            visuals[0].order = self.draw_order
             if not visuals[0].visible:
                 visuals[0].visible = True
         elif visuals[0].visible:
@@ -744,7 +740,6 @@ class ImageArtist(Artist):
     def get_current_data(self, data_obj, valid_idx, norm_limits, str_maps, color_limits):
         visual_input = {}
         visual_input['data'] = np.flipud(self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, None, self.color_field, self.colormap, self.color_label, self.color_unit, is_1d=False, get_last=True, to_shape=None)).astype('float32')
-        visual_input['interpolation'] = self.interpolation
         x_shape, y_shape, _ = visual_input['data'].shape
         if self.x_pos_field is None:
             x = self.value_to_numeric(str_maps['x'], self.x_pos, norm_limits=norm_limits['x'])
@@ -785,7 +780,9 @@ class ImageArtist(Artist):
         return copy.deepcopy(state) if as_copy else state
 
     def initialize(self, view):
-        return [vpscene.Image(parent=view.scene)]
+        image = vpscene.Image(interpolation=self.interpolation, parent=view.scene)
+        image.order = self.draw_order
+        return [image]
 
     def set_state(self, data_objs, axis_type, artist_names, unit_reg, state):
         attrs = self.get_state(as_copy=False)
@@ -867,8 +864,6 @@ class ImageArtist(Artist):
             visual_input, transform = self.get_current_data(data_obj, valid_idx, norm_limits, str_maps, color_limits)
             visuals[0].set_data(visual_input['data'])
             visuals[0].transform = transform
-            visuals[0].interpolation = visual_input['interpolation']
-            visuals[0].order = self.draw_order
             if not visuals[0].visible:
                 visuals[0].visible = True
         elif visuals[0].visible:
@@ -887,7 +882,6 @@ class InfiniteLineArtist(Artist):
         else:
             visual_input['pos'] = self.field_to_numeric(data_obj, valid_idx, str_maps[axis], self.pos_field, is_1d=True, get_last=True, norm_limits=norm_limits[axis])
         visual_input['color'] = self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.color, self.color_field, self.colormap, self.color_label, self.color_unit, is_1d=True, get_last=True, to_shape=(1,)).flatten()
-        visual_input['vertical'] = self.is_vertical
         return visual_input
 
     def get_legend_info(self, str_map, limits_source):
@@ -912,7 +906,9 @@ class InfiniteLineArtist(Artist):
         return copy.deepcopy(state) if as_copy else state
 
     def initialize(self, view):
-        return [vpscene.InfiniteLine(vertical=self.is_vertical, parent=view.scene)]
+        infinite_line = vpscene.InfiniteLine(vertical=self.is_vertical, parent=view.scene)
+        infinite_line.order = self.draw_order
+        return [infinite_line]
 
     def set_state(self, data_objs, axis_type, artist_names, unit_reg, state):
         attrs = self.get_state(as_copy=False)
@@ -983,13 +979,7 @@ class InfiniteLineArtist(Artist):
     def update(self, data_obj, visuals, valid_idx, norm_limits, str_maps, color_limits):
         if self.visible and (self.data_name is None or valid_idx.any()):
             visual_input = self.get_current_data(data_obj, valid_idx, norm_limits, str_maps, color_limits)
-            is_vertical = visual_input.pop('vertical')
-            if is_vertical != visuals[0].is_vertical:
-                parent = visuals[0].parent
-                visuals[0].parent = None
-                visuals[0] = vpscene.InfiniteLine(vertical=is_vertical, parent=parent)
             visuals[0].set_data(**visual_input)
-            visuals[0].order = self.draw_order
             if not visuals[0].visible:
                 visuals[0].visible = True
         elif visuals[0].visible:
@@ -1036,11 +1026,13 @@ class PolygonArtist(Artist):
         return copy.deepcopy(state) if as_copy else state
 
     def initialize(self, view):
-        return [vpscene.Polygon(parent=view.scene)]
+        polygon = vpscene.Polygon(parent=view.scene)
+        polygon.order = self.draw_order
+        return [polygon]
 
     def set_state(self, data_objs, axis_type, artist_names, unit_reg, state):
         attrs = self.get_state(as_copy=False)
-        data_changed, field_changed, no_fields = False, False, True
+        data_changed = field_changed = False
 
         # Validate parameters
         if 'name' in state and attrs['name'] is None:
@@ -1115,7 +1107,6 @@ class PolygonArtist(Artist):
             visuals[0].border.set_data(width=visual_input.pop('border_width'))
             for attr in visual_input:
                 setattr(visuals[0], attr, visual_input[attr])
-            visuals[0].order = self.draw_order
             if not visuals[0].visible:
                 visuals[0].visible = True
         elif visuals[0].visible:
@@ -1177,7 +1168,9 @@ class RectangleArtist(Artist):
         return copy.deepcopy(state) if as_copy else state
 
     def initialize(self, view):
-        return [vpscene.Rectangle(center=[0, 0], parent=view.scene)]
+        rectangle = vpscene.Rectangle(center=[0, 0], parent=view.scene)
+        rectangle.order = self.draw_order
+        return [rectangle]
 
     def set_state(self, data_objs, axis_type, artist_names, unit_reg, state):
         attrs = self.get_state(as_copy=False)
@@ -1256,7 +1249,6 @@ class RectangleArtist(Artist):
             visuals[0].transform = transform
             for attr in visual_input:
                 setattr(visuals[0], attr, visual_input[attr])
-            visuals[0].order = self.draw_order
             if not visuals[0].visible:
                 visuals[0].visible = True
         elif visuals[0].visible:
@@ -1277,13 +1269,9 @@ class ScatterArtist(Artist):
         visual_input, text_input = {}, {}
         visual_input['data'] = self.get_coordinates(data_obj, valid_idx, norm_limits, str_maps)
         to_shape = (visual_input['data'].shape[0],)
-        visual_input['edge_width'] = self.edge_width
-        visual_input['marker_size'] = self.marker_size
-        visual_input['width'] = self.line_width
-        visual_input['face_color'] = self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.marker_color, self.marker_color_field, self.marker_colormap, self.marker_color_label, self.marker_color_unit, is_1d=True, get_last=False, to_shape=to_shape) if visual_input['marker_size'] > 0 else self.marker_color
-        visual_input['edge_color'] = self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.edge_color, self.edge_color_field, self.edge_colormap, self.edge_color_label, self.edge_color_unit, is_1d=True, get_last=False, to_shape=to_shape) if visual_input['edge_width'] > 0 else self.edge_color
-        visual_input['color'] = self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.line_color, self.line_color_field, self.line_colormap, self.line_color_label, self.line_color_unit, is_1d=True, get_last=False, to_shape=to_shape) if visual_input['width'] > 0 else self.line_color
-        visual_input['symbol'] = self.marker
+        visual_input['face_color'] = self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.marker_color, self.marker_color_field, self.marker_colormap, self.marker_color_label, self.marker_color_unit, is_1d=True, get_last=False, to_shape=to_shape) if self.marker_size > 0 else self.marker_color
+        visual_input['edge_color'] = self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.edge_color, self.edge_color_field, self.edge_colormap, self.edge_color_label, self.edge_color_unit, is_1d=True, get_last=False, to_shape=to_shape) if self.edge_width > 0 else self.edge_color
+        visual_input['color'] = self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.line_color, self.line_color_field, self.line_colormap, self.line_color_label, self.line_color_unit, is_1d=True, get_last=False, to_shape=to_shape) if self.line_width > 0 else self.line_color
         if data_obj.id_field is not None:
             id_vals = data_obj.data.loc[valid_idx, data_obj.id_field]
             id_vals.reset_index(drop=True, inplace=True)
@@ -1300,7 +1288,6 @@ class ScatterArtist(Artist):
                 last_idx = [-1]
             text_input['pos'] = visual_input['data'][last_idx]
             text_input['text'] = ('  ' + data_obj.data.loc[valid_idx, self.label_field].iloc[last_idx].astype(str)).to_numpy()
-            text_input['font_size'] = self.label_size
         return visual_input, text_input
 
     def get_legend_info(self, str_map, limits_source):
@@ -1382,11 +1369,13 @@ class ScatterArtist(Artist):
         return copy.deepcopy(state) if as_copy else state
 
     def initialize(self, view):
-        scatter = vpscene.LinePlot(parent=view.scene)
+        scatter = vpscene.LinePlot(edge_width=self.edge_width, marker_size=self.marker_size, symbol=self.marker, width=self.line_width, parent=view.scene)
         scatter.remove_subvisual(scatter._line)
         scatter.add_subvisual(scatter._line)
         scatter._markers.antialias = 0
-        text = vpscene.Text(anchor_x='left', parent=view.scene)
+        scatter.order = self.draw_order
+        text = vpscene.Text(anchor_x='left', font_size=self.label_size, parent=view.scene)
+        text.order = self.label_draw_order
         return [scatter, text]
 
     def set_state(self, data_objs, axis_type, artist_names, unit_reg, state):
@@ -1470,7 +1459,6 @@ class ScatterArtist(Artist):
         if self.visible and valid_idx.any():
             visual_input, text_input = self.get_current_data(data_obj, valid_idx, norm_limits, str_maps, color_limits)
             visuals[0].set_data(**visual_input)
-            visuals[0].order, visuals[1].order = self.draw_order, self.label_draw_order
             show_labels = len(text_input) > 0
             if not visuals[0].visible:
                 visuals[0].visible = True
@@ -1517,7 +1505,9 @@ class SurfaceArtist(Artist):
         return copy.deepcopy(state) if as_copy else state
 
     def initialize(self, view):
-        return [vpscene.SurfacePlot(shading=None, parent=view.scene)]
+        surface = vpscene.SurfacePlot(shading=None, parent=view.scene)
+        surface.order = self.draw_order
+        return [surface]
 
     def set_state(self, data_objs, axis_type, artist_names, unit_reg, state):
         attrs = self.get_state(as_copy=False)
@@ -1613,7 +1603,6 @@ class SurfaceArtist(Artist):
             colors = visual_input.pop('colors')
             visuals[0].set_data(**visual_input)
             visuals[0].mesh_data.set_vertex_colors(colors)
-            visuals[0].order = self.draw_order
             if not visuals[0].visible:
                 visuals[0].visible = True
         elif visuals[0].visible:
@@ -1632,10 +1621,6 @@ class TextArtist(Artist):
         z = self.field_to_numeric(data_obj, valid_idx, str_maps['z'], self.z_field, is_1d=True, norm_limits=norm_limits['z'])
         visual_input['pos'] = np.column_stack([x, y]) if z is None else np.column_stack([x, y, z])
         visual_input['color'] = self.create_color(data_obj, valid_idx, str_maps['color'], color_limits, self.color, self.color_field, self.colormap, self.color_label, self.color_unit, is_1d=True, get_last=False, to_shape=x.shape)
-        visual_input['bold'] = self.bold
-        visual_input['italic'] = self.italic
-        visual_input['font_size'] = self.font_size
-        visual_input['anchors'] = [self.x_anchor, self.y_anchor]
         return visual_input
 
     def get_legend_info(self, str_map, limits_source):
@@ -1657,7 +1642,9 @@ class TextArtist(Artist):
         return copy.deepcopy(state) if as_copy else state
 
     def initialize(self, view):
-        return [vpscene.Text(parent=view.scene)]
+        text = vpscene.Text(anchors=[self.x_anchor, self.y_anchor], bold=self.bold, font_size=self.font_size, italic=self.italic, parent=view.scene)
+        text.order = self.draw_order
+        return [text]
 
     def set_state(self, data_objs, axis_type, artist_names, unit_reg, state):
         attrs = self.get_state(as_copy=False)
@@ -1738,7 +1725,6 @@ class TextArtist(Artist):
             visual_input = self.get_current_data(data_obj, valid_idx, norm_limits, str_maps, color_limits)
             for attr in visual_input:
                 setattr(visuals[0], attr, visual_input[attr])
-            visuals[0].order = self.draw_order
             if not visuals[0].visible:
                 visuals[0].visible = True
         elif visuals[0].visible:
