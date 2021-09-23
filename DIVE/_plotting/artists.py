@@ -1642,7 +1642,7 @@ class TextArtist(Artist):
         return copy.deepcopy(state) if as_copy else state
 
     def initialize(self, view):
-        text = vpscene.Text(anchors=[self.x_anchor, self.y_anchor], bold=self.bold, font_size=self.font_size, italic=self.italic, parent=view.scene)
+        text = vpscene.Text(anchor_x=self.x_anchor, anchor_y=self.y_anchor, bold=self.bold, font_size=self.font_size, italic=self.italic, parent=view.scene)
         text.order = self.draw_order
         return [text]
 
