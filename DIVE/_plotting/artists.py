@@ -1297,6 +1297,9 @@ class ScatterArtist(Artist):
         marker_opacity = 1 if self.marker_size > 0 else 0
         edge_opacity = 1 if self.edge_width > 0 else 0
         line_opacity = 1 if self.line_width > 0 else 0
+        if self.marker == '++':
+            marker_colormap, marker_color, marker_opacity = edge_colormap, edge_color, edge_opacity
+            edge_opacity = 0
         line = '<rect x="0" y="14" width="30" height="2" fill="{}" fill-opacity="{}" />'.format('{}', line_opacity)
         if self.marker in ['disc', 'o']:
             marker = '<circle cx="15" cy="15" r="7.5" stroke="{}" stroke-width="2" stroke-opacity="{}" fill="{}" fill-opacity="{}" />'
@@ -1308,7 +1311,7 @@ class ScatterArtist(Artist):
             marker = '<polygon points="12.5,7.5 17.5,7.5 17.5,22.5 12.5,22.5" stroke="{}" stroke-width="2" stroke-opacity="{}" fill="{}" fill-opacity="{}" />'
         elif self.marker in ['hbar', '-']:
             marker = '<polygon points="7.5,12.5 22.5,12.5 22.5,17.5 7.5,17.5" stroke="{}" stroke-width="2" stroke-opacity="{}" fill="{}" fill-opacity="{}" />'
-        elif self.marker in ['cross', '+']:
+        elif self.marker in ['cross', '+', '++']:
             marker = '<polygon points="12.5,7.5 17.5,7.5 17.5,12.5 22.5,12.5 22.5,17.5 17.5,17.5 17.5,22.5 12.5,22.5 12.5,17.5 7.5,17.5 7.5,12.5 12.5,12.5" stroke="{}" stroke-width="2" stroke-opacity="{}" fill="{}" fill-opacity="{}" />'
         elif self.marker in ['tailed_arrow', '->']:
             marker = '<polygon points="22.5,15 15,22.5 13.2,20.7 17.8,16.25 7.5,16.25 7.5,13.75 17.8,13.75 13.2,9.3 15,7.5" stroke="{}" stroke-width="2" stroke-opacity="{}" fill="{}" fill-opacity="{}" />'
