@@ -511,7 +511,7 @@ class PolygonWidget(qtwidgets.QWidget):
         color_group.setLayout(qtwidgets.QFormLayout())
         self.layout().addRow(color_group)
         self.color, self.color_field, self.colormap, self.color_label, self.color_unit_from, self.color_unit_to = add_color_widgets(color_group.layout(), artist['color'], artist['color_field'], artist['colormap'], artist['color_label'], artist['color_unit'])
-        edge_group = qtwidgets.QGroupBox('Rectangle Edge')
+        edge_group = qtwidgets.QGroupBox('Polygon Edge')
         edge_group.setLayout(qtwidgets.QFormLayout())
         self.layout().addRow(edge_group)
         self.edge_width = add_spinbox(edge_group.layout(), 'Width:', 0.0, float('inf'), artist['edge_width'])
