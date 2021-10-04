@@ -724,9 +724,10 @@ class EllipseArtist(Artist):
     def update(self, data_obj, visuals, valid_idx, norm_limits, str_maps, color_limits):
         if self.visible and (self.data_name is None or valid_idx.any()):
             visual_input = self.get_current_data(data_obj, valid_idx, norm_limits, str_maps, color_limits)
-            visuals[0].border.set_data(width=visual_input.pop('border_width'))
+            border_width = visual_input.pop('border_width')
             for attr in visual_input:
                 setattr(visuals[0], attr, visual_input[attr])
+            visuals[0].border.set_data(width=border_width)
             if not visuals[0].visible:
                 visuals[0].visible = True
         elif visuals[0].visible:
@@ -1104,9 +1105,10 @@ class PolygonArtist(Artist):
     def update(self, data_obj, visuals, valid_idx, norm_limits, str_maps, color_limits):
         if self.visible and valid_idx.any():
             visual_input = self.get_current_data(data_obj, valid_idx, norm_limits, str_maps, color_limits)
-            visuals[0].border.set_data(width=visual_input.pop('border_width'))
+            border_width = visual_input.pop('border_width')
             for attr in visual_input:
                 setattr(visuals[0], attr, visual_input[attr])
+            visuals[0].border.set_data(width=border_width)
             if not visuals[0].visible:
                 visuals[0].visible = True
         elif visuals[0].visible:
@@ -1245,10 +1247,11 @@ class RectangleArtist(Artist):
     def update(self, data_obj, visuals, valid_idx, norm_limits, str_maps, color_limits):
         if self.visible and (self.data_name is None or valid_idx.any()):
             visual_input, transform = self.get_current_data(data_obj, valid_idx, norm_limits, str_maps, color_limits)
-            visuals[0].border.set_data(width=visual_input.pop('border_width'))
+            border_width = visual_input.pop('border_width')
             visuals[0].transform = transform
             for attr in visual_input:
                 setattr(visuals[0], attr, visual_input[attr])
+            visuals[0].border.set_data(width=border_width)
             if not visuals[0].visible:
                 visuals[0].visible = True
         elif visuals[0].visible:
