@@ -9,7 +9,7 @@ DIVE is a Qt GUI that provides a simple way to plot and animate `pandas` DataFra
 * Unit conversion for axes and colorbars (if `pint` module is installed)
 * Animation controls (if DIVE is given data with a time field)
 * Data filtering
-* Data selection/highlighting (for arrow and scatter plots)
+* Data selection/highlighting (for arrow and scatter artists)
 * Table to show values/statistics of data fields
 * Screenshot capture
 * Video recording (if `opencv-python` module is installed)
