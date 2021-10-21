@@ -685,7 +685,7 @@ class ScatterWidget(qtwidgets.QWidget):
         marker_group.setLayout(qtwidgets.QFormLayout())
         self.layout().addRow(marker_group)
         self.marker = qtwidgets.QComboBox()
-        self.marker.addItems(sorted(vpvisuals.marker_types))
+        self.marker.addItems(sorted(vpvisuals.MarkersVisual._marker_funcs))
         self.marker.setCurrentText(artist['marker'])
         marker_group.layout().addRow('Marker:', self.marker)
         self.marker_size = add_spinbox(marker_group.layout(), 'Size:', 0.0, float('inf'), artist['marker_size'])
