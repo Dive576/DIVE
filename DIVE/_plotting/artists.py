@@ -1420,8 +1420,8 @@ class ScatterArtist(Artist):
             attrs['marker'] = state['marker']
             if not isinstance(attrs['marker'], str):
                 return 'marker must be of type: str'
-            elif attrs['marker'] not in vpvisuals.marker_types:
-                return 'marker must be one of the following: {}'.format(str(vpvisuals.marker_types)[1:-1])
+            elif attrs['marker'] not in vpvisuals.MarkersVisual._marker_funcs:
+                return 'marker must be one of the following: {}'.format(str(sorted(vpvisuals.MarkersVisual._marker_funcs))[1:-1])
         for attr in ['label_size', 'draw_order', 'label_draw_order', 'line_width', 'marker_size', 'edge_width']:
             if attr in state:
                 attrs[attr] = state[attr]
