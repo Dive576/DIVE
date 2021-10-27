@@ -230,7 +230,7 @@ class DIVEValueFilter:
                             if time_bins is None:
                                 diff_idx = np.diff(idx.astype('int'), prepend=0)
                                 if pd.api.types.is_datetime64tz_dtype(filter_time):
-                                    filter_time = filter_time.astype('int64') / 1e9
+                                    filter_time = filter_time.view('int64') / 1e9
                                 start_time = filter_time.loc[diff_idx == 1]
                                 end_time = filter_time.loc[diff_idx == -1]
                                 time_bins = np.zeros(start_time.size * 2, dtype=start_time.dtype)
@@ -240,7 +240,7 @@ class DIVEValueFilter:
                                 if end_time.size > 0:
                                     time_bins[1::2] = end_time
                             if pd.api.types.is_datetime64tz_dtype(data_time):
-                                data_time = data_time.astype('int64') / 1e9
+                                data_time = data_time.view('int64') / 1e9
                             bin_num = np.digitize(data_time, time_bins)
                             data_idx = (bin_num % 2 == 1).astype('bool')
                     if data_idx is not None:
