@@ -368,7 +368,7 @@ class AxisInstance:
         length = (self.view.parent.size[dim_idx] / self.view.canvas.dpi) * 72
         space = int(np.floor(length / (self.view.canvas.tick_font_size * tick_mult))) if self.view.canvas.tick_font_size > 0 else 100
         if tick_type == 'date':
-            edge_offset = pd.DateOffset(years=1)
+            edge_offset = pd.Timedelta(days=365)
             clip_vmin, clip_vmax = np.clip([vmin, vmax], (pd.Timestamp.min + edge_offset).normalize().timestamp(), (pd.Timestamp.max.replace(nanosecond=0) - edge_offset).normalize().timestamp())
             if clip_vmin == clip_vmax:
                 return np.array([]), time_interval
@@ -399,7 +399,7 @@ class AxisInstance:
                     if i == 2 and (interval == 7 or interval == 14):
                         byrange = byrange[:-1]
                 ticks = pd.date_range(clip_dmin.replace(tzinfo=None), clip_dmax.replace(tzinfo=None), freq=freq[i]).tz_localize(self.timezone, ambiguous=False, nonexistent='shift_backward').floor(freq='D' if freq[i] in ['YS', 'MS'] else freq[i])
-                ticks = ticks[np.isin(getattr(ticks, freq_map[freq[i]]), byrange)].astype('int64') / 1e9
+                ticks = ticks[np.isin(getattr(ticks, freq_map[freq[i]]), byrange)].view('int64') / 1e9
                 return ticks[(ticks >= clip_vmin) & (ticks <= clip_vmax)], freq_map[freq[i]]
 
             # Use numerical tick calculation for ranges less than one second
