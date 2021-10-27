@@ -88,8 +88,8 @@ def safe_time_math(time, amount, add=True):
         The incremented/decremented time value.
     """
     if isinstance(time, pd.Timestamp):
-        edge_offset = pd.DateOffset(years=1)
-        min_time, max_time = (pd.Timestamp.min.replace(nanosecond=0) + edge_offset).tz_localize('UTC').tz_convert(time.tzinfo), (pd.Timestamp.max.replace(nanosecond=0) - edge_offset).tz_localize('UTC').tz_convert(time.tzinfo)
+        edge_offset = pd.Timedelta(days=365)
+        min_time, max_time = (pd.Timestamp.min + edge_offset).replace(nanosecond=0).tz_localize('UTC').tz_convert(time.tzinfo), (pd.Timestamp.max - edge_offset).replace(nanosecond=0).tz_localize('UTC').tz_convert(time.tzinfo)
         seconds = time.timestamp() + amount.total_seconds() if add else time.timestamp() - amount.total_seconds()
         if seconds < min_time.timestamp():
             return min_time
@@ -115,8 +115,8 @@ def safe_tz_convert(time, timezone):
         The converted time value.
     """
     if isinstance(time, pd.Timestamp):
-        edge_offset = pd.DateOffset(years=1)
-        return np.clip(time, (pd.Timestamp.min.replace(nanosecond=0) + edge_offset).tz_localize('UTC'), (pd.Timestamp.max.replace(nanosecond=0) - edge_offset).tz_localize('UTC')).tz_convert(timezone)
+        edge_offset = pd.Timedelta(days=365)
+        return np.clip(time, (pd.Timestamp.min + edge_offset).replace(nanosecond=0).tz_localize('UTC'), (pd.Timestamp.max - edge_offset).replace(nanosecond=0).tz_localize('UTC')).tz_convert(timezone)
     return time
 
 def strftime(time, include_date=True, include_tz=False):
