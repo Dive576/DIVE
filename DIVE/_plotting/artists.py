@@ -58,7 +58,7 @@ class Artist:
             return [np.min(val_array), np.max(val_array)], [], ['num']
         elif pd.api.types.is_datetime64tz_dtype(val_array):
             nulls = val_array.isnull()
-            val_array = (val_array.astype('int64') / 1e9)[~nulls]
+            val_array = (val_array.view('int64') / 1e9)[~nulls]
             if len(val_array) == 0:
                 return [], [], []
             elif size is not None:
@@ -147,7 +147,7 @@ class Artist:
                 output = np.real(array)
             elif pd.api.types.is_datetime64tz_dtype(array):
                 nulls = array.isnull()
-                array = array.astype('int64') / 1e9
+                array = array.view('int64') / 1e9
                 array[nulls] = np.nan
                 output = array
             else:
