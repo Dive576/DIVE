@@ -454,7 +454,7 @@ class BoxArtist(Artist):
         if self.height_field is None:
             visual_input['height'] = self.value_to_numeric(None, self.height, norm_limits=norm_limits['y'], is_size=True)
         else:
-            visual_input['heigth'] = self.field_to_numeric(data_obj, valid_idx, None, self.height_field, is_1d=True, get_last=True, norm_limits=norm_limits['y'], is_size=True)
+            visual_input['height'] = self.field_to_numeric(data_obj, valid_idx, None, self.height_field, is_1d=True, get_last=True, norm_limits=norm_limits['y'], is_size=True)
         if self.depth_field is None:
             visual_input['depth'] = self.value_to_numeric(None, self.depth, norm_limits=norm_limits['z'], is_size=True)
         else:
