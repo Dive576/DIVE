@@ -300,6 +300,7 @@ class DIVEManager:
 
     def set_splitter_visible(self):
         self.legend.setVisible(self.legend.topLevelItemCount() > 0)
+        self.canvas.native.setVisible(len(self.canvas.axes) > 0)
         self.table.setVisible(self.table.rowCount() > 0)
 
     def set_theme(self):
@@ -709,6 +710,7 @@ class DIVEManager:
             if need_update:
                 self.update_canvas()
                 self.update_limit_buttons()
+                self.set_splitter_visible()
         else:
             helper_functions.print_error('Cannot display axis. "{}" is not a valid axis name.'.format(name))
 
@@ -720,6 +722,7 @@ class DIVEManager:
             if need_update:
                 self.update_canvas()
                 self.update_limit_buttons()
+                self.set_splitter_visible()
         else:
             helper_functions.print_error('Cannot display axis group. "{}" is not a valid axis group name.'.format(name))
 
@@ -1071,6 +1074,7 @@ class DIVEManager:
             if need_update:
                 self.update_canvas()
                 self.update_limit_buttons()
+                self.set_splitter_visible()
         else:
             helper_functions.print_error('Cannot remove axis. "{}" is not a valid axis name.'.format(name))
 
@@ -1085,7 +1089,9 @@ class DIVEManager:
             del self.axis_groups[name]
             need_update = self.canvas.remove_axis_group(name)
             if need_update:
+                self.update_canvas()
                 self.update_limit_buttons()
+                self.set_splitter_visible()
         else:
             helper_functions.print_error('Cannot remove axis group. "{}" is not a valid axis group name.'.format(name))
 
